@@ -1,0 +1,113 @@
+{
+    "model": {
+        "name": "models.SegModel20",
+        "path": "checkpoint/SegModel20.pth",
+        "s2Module": [
+            [
+                16, 48, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                48, 48, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                48, 96, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 2
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 2
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 4
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 1
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 2
+                }, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 4
+                }
+            ],
+            [
+                96, 96, {
+                    "kernel_size": 3,
+                    "avg_pool_kernel": 1
+                }, {
+                    "kernel_size": 5,
+                    "avg_pool_kernel": 2
+                }
+            ]
+        ]
+    },
+    "dataset": {
+        "name": "datasets.SegmentationData",
+        "kwargs": {
+            "datadir": "dataset/EG1800/"
+        }
+    },
+    "hyper": {
+        "batch_size": 10,
+        "decay_every": 15,
+        "lr": 0.00095,
+        "end_epoch": 60
+    },
+    "loss": {
+        "name": "loss_functions.SINetLoss"
+    }
+}

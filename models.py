@@ -1,7 +1,10 @@
-import torch.nn as nn
+import json
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
+
+from utils.SINet import SINetDecoder, SINetEncoder
 
 
 class HSwish(nn.Module):
@@ -1325,21 +1328,6 @@ class SegModel19(nn.Module):
 
         self.in_pool = nn.AdaptiveMaxPool2d((224, 224))
 
-        # Given 256x144 input
-        # torch.Size([1, 3, 256, 144])
-        # torch.Size([1, 16, 128, 72])
-        # torch.Size([1, 16, 64, 36])
-        # torch.Size([1, 24, 32, 18])
-        # torch.Size([1, 24, 32, 18])
-        # torch.Size([1, 40, 16, 9])
-        # torch.Size([1, 40, 16, 9])
-        # torch.Size([1, 40, 16, 9])
-        # torch.Size([1, 48, 16, 9])
-        # torch.Size([1, 48, 16, 9])
-        # torch.Size([1, 96, 8, 5])
-        # torch.Size([1, 96, 8, 5])
-        # torch.Size([1, 96, 8, 5])
-        # torch.Size([1, 576, 8, 5])
         self.features = m.features
 
         for param in self.features.parameters():
@@ -1409,3 +1397,20 @@ class SegModel19(nn.Module):
         y = F.interpolate(y, x.shape[2:])
         y = self.out(y)
         return y
+
+
+# SINet - 2019
+class SINet(nn.Module):
+
+    def __init__(self, n_classes):
+        super().__init__()
+
+        self.encoder = SINetEncoder(in_channels=3, n_classes=n_classes)
+        self.decoder = SINetDecoder(in_channels=n_classes,
+                                    inf_block_channels=48)
+
+    def forward(self, input):
+        bottleneck, encoder_feature_map = self.encoder(input)
+        x = self.decoder((bottleneck, encoder_feature_map))
+
+        return x
